@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <style>
+    #textView {
+      float: left;
+    }
+    #textView label{
+      display: block;
+    }
+    #textView p{
+      display: inline-block;
+      width:  100px;
+    }
+    #graphView {
+      float: left;
+      height: 600px;
+      width: 600px;
+      border: 2px solid black;
+      margin-left: 30px;
+    }
+    #sphere {
+      height: 50px;
+      width: 50px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid black;
+      border-radius: 1000000px;
+    }
+  </style>
+</head>
+<body>
+  <div id="textView">
+    <label for="radius">
+      <p>半径：</p>
+      <input type="text" name="radius">
+    </label>
+    <label for="volume">
+      <p>体积：</p>
+      <input type="text" name="volume">
+    </label>
+    <label for="suArea">
+      <p>表面积：</p>
+      <input type="text" name="suArea">
+    </label>
+  </div>
+  <div id="graphView">
+    <div id="sphere"></div>
+  </div>
+
+  <script src="mvc.js"></script>
+</body>
+</html>
