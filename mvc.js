@@ -10,11 +10,11 @@ Event.prototype = {
   constaructor: 'Event',
   attach : function(listeners) {
     this._listeners.push(listeners);
-    console.log(this._listeners);
+    // console.log(this._listeners);
   },
   notify: function(objs){
     for(var i = 0,ilen = this._listeners.length; i < ilen; i+=1) {
-      console.log(this._listeners[i]);
+      // console.log(this._listeners[i]);
       this._listeners[i](this._observer,objs);
     }
   }
@@ -98,9 +98,19 @@ function View(_model, _elements) {
   });
   this.elements.graphView.click(function (e) {
     // 获取点击位置和调整后的半径数据
-    // ...
+    var x = e.clientX - view.elements.graphView.offset().left,
+        y = e.clientY - view.elements.graphView.offset().top;
+    var width = 600, height = 600;
+    var r = Math.sqrt(Math.pow(width / 2 - x, 2) + Math.pow(height / 2 - y, 2));
+    // console.log(typeof view.elements.graphView.offset().top);
+    // console.log("graphView", view.elements.graphView.offset());
+    // console.log("client", e.clientX, e.clientY);
+    // console.log("absolute", x, y, r
+    //             // e.clientX - view.elements.graphView.offset().left,
+    //             // e.clientY - view.elements.graphView.offset().top
+    //            );
     // 
-    // view.changeSphere.notify({'radius' :r});
+    view.changeSphere.notify({'valueName': 'radius', 'value' :r});
   });
 }
 
@@ -108,14 +118,13 @@ View.prototype = {
   constructor: 'View',
 
   changeView: function () {
-    console.log(this.model.getRadius(), this.model.getVolume(), this.model.getSuArea());
     this.elements.radius.val(this.model.getRadius());
     this.elements.volume.val(this.model.getVolume());
     this.elements.suArea.val(this.model.getSuArea());
 
     // 更改图形
-    this.elements.graphView.find("#graph").css("height", this.model.getRadius() + "px");
-    this.elements.graphView.find("#graph").css("width", this.model.getRadius() + "px");
+    this.elements.graphView.find("#graph").css("height", this.model.getRadius() * 2 + "px");
+    this.elements.graphView.find("#graph").css("width", this.model.getRadius() * 2 + "px");
   }
 }
 
