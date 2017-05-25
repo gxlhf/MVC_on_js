@@ -20,8 +20,9 @@
       width: 600px;
       border: 2px solid black;
       margin-left: 30px;
+      overflow: hidden;
     }
-    #sphere {
+    #graph {
       height: 50px;
       width: 50px;
       position: relative;
@@ -37,19 +38,19 @@
   <div id="textView">
     <label for="radius">
       <p>半径：</p>
-      <input type="text" name="radius">
+      <input type="text" name="radius" id="radius">
     </label>
     <label for="volume">
       <p>体积：</p>
-      <input type="text" name="volume">
+      <input type="text" name="volume" id="volume">
     </label>
     <label for="suArea">
       <p>表面积：</p>
-      <input type="text" name="suArea">
+      <input type="text" name="suArea" id="suArea">
     </label>
   </div>
   <div id="graphView">
-    <div id="sphere"></div>
+    <div id="graph"></div>
   </div>
 
   <script src="mvc.js"></script>
