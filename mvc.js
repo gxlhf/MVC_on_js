@@ -166,7 +166,6 @@ function Controller(_model, _views) {
 
   var controller = this;
   for(i in this.views){
-    console.log(this.views[i]);
     this.views[i].changeSphere.attach(function (sender, args) {
       controller.updateModel(args);
     });
