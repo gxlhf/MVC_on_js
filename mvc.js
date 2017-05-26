@@ -71,19 +71,18 @@ Model.prototype = {
  * 视图
  * 作为观察者（当Model发生变化时接收到来自Event的通知）
  */
-function View(_model, _elements) {
+function TextView(_model, _elements) {
   this.model = _model;
   this.elements = _elements;
 
   this.changeSphere = new Event(this);
 
-  var view = this;
-  this.isMouseDown = false;
-
   // 绑定模型监听器
   this.model.changeSphere.attach(function () {
     view.changeView();
-  }),
+  });
+
+  var view = this;
 
   // 把监听器绑定到HTML事件上
   this.elements.radius.bind('input', function (e) {
@@ -95,32 +94,52 @@ function View(_model, _elements) {
   this.elements.suArea.bind('input', function (e) {
     view.changeSphere.notify({'valueName': 'suArea', 'value': e.target.value});
   });
+}
 
-  this.elements.graphView.click(function (e) {
-    view.changeSphere.notify({'valueName': 'radius', 'value': view.getR(e)});
+TextView.prototype = {
+  constructor: 'TextView',
+
+  changeView: function () {
+    this.elements.radius.val(this.model.getRadius());
+    this.elements.volume.val(this.model.getVolume());
+    this.elements.suArea.val(this.model.getSuArea());
+  }
+}
+
+function GraphView(_model, _elements) {
+  this.model = _model;
+  this.elements = _elements;
+
+  this.changeSphere = new Event(this);
+
+  // 绑定模型监听器
+  this.model.changeSphere.attach(function () {
+    view.changeView();
   });
+
+  var view = this;
+  this.isMouseDown = false;
+
   this.elements.graphView.mousedown(function (e) {
     view.isMouseDown = true;
     view.changeSphere.notify({'valueName': 'radius', 'value': view.getR(e)});
   });
   this.elements.graphView.mouseup(function (e) {
     view.isMouseDown = false;
-    view.changeSphere.notify({'valueName': 'radius', 'value': view.getR(e)});
   });
   this.elements.graphView.mousemove(function (e) {
     if(view.isMouseDown)
-    view.changeSphere.notify({'valueName': 'radius', 'value': view.getR(e)});
+      view.changeSphere.notify({'valueName': 'radius', 'value': view.getR(e)});
+  });
+  this.elements.graphView.mouseout(function (e) {
+    view.isMouseDown = false;
   });
 }
 
-View.prototype = {
-  constructor: 'View',
+GraphView.prototype = {
+  constructor: 'GraphView',
 
   changeView: function () {
-    this.elements.radius.val(this.model.getRadius());
-    this.elements.volume.val(this.model.getVolume());
-    this.elements.suArea.val(this.model.getSuArea());
-
     // 更改图形
     this.elements.graphView.find("#graph").css("height", this.model.getRadius() * 2 + "px");
     this.elements.graphView.find("#graph").css("width", this.model.getRadius() * 2 + "px");
@@ -135,27 +154,32 @@ View.prototype = {
   }
 }
 
-
 /*
  * 控制器
  * 响应用户请求，随后调用Model上的变化函数
  */
-function Controller(_model, _view) {
+function Controller(_model, _views) {
   this.model = _model;
-  this.view = _view;
+  this.views = _views;
+
+  var view = this;
 
   var controller = this;
-  this.view.changeSphere.attach(function (sender, args) {
-    controller.updateModel(args);
-  });
+  for(i in this.views){
+    console.log(this.views[i]);
+    this.views[i].changeSphere.attach(function (sender, args) {
+      controller.updateModel(args);
+    });
+  }
 }
 
 Controller.prototype = {
   constructor: 'Controller',
 
   updateModel: function (argument) {
-    var reg = /^((0{0,1}|[1-9][0-9]*)|(0|[1-9][0-9]*)+(.[0-9]+))$/;
+    var reg = /^([1-9]\d*\.\d*|0\.\d*[1-9]*\d*|0?\.0+|0{0,1}|[1-9]\d*)$/;
     if(!reg.test(argument.value)){
+      alert("请输入正确的数值");
       return;
     }
     switch(argument.valueName){
@@ -172,11 +196,13 @@ Controller.prototype = {
 // var controller;
 $(function () {
   var model = new Model(0);
-  var view = new View(model, {
+  var textView = new TextView(model, {
     'radius': $('#radius'),
     'volume': $('#volume'),
     'suArea': $('#suArea'),
+  });
+  var graphView = new GraphView(model, {
     'graphView': $('#graphView')
   });
-  var controller = new Controller(model, view);
+  var controller = new Controller(model, [textView, graphView]);
 })

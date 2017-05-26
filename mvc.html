@@ -32,9 +32,33 @@
       border: 1px solid black;
       border-radius: 1000000px;
       background: radial-gradient(circle at 50% 120%, #323232, #0a0a0a 80%, #000000 100%);
+      pointer-events: none;
     }
-    #graph :before { content: ""; position: absolute; background: radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%); border-radius: 50%; bottom: 2.5%; left: 5%; opacity: 0.6; height: 100%; width: 90%; filter: blur(5px); z-index: 2; }
-    #graph :after { content: ""; width: 100%; height: 100%; position: absolute; top: 5%; left: 10%; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8) 14%, rgba(255, 255, 255, 0) 24%); transform: translateX(-30%) translateY(-25%) skewX(-20deg); filter: blur(10px); }
+    #graph :before { 
+      content: ""; 
+      position: absolute;
+      background: radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+      bottom: 2.5%;
+      left: 5%;
+      opacity: 0.6;
+      height: 100%;
+      width: 90%;
+      filter: blur(5px);
+      z-index: 2;
+    }
+    #graph :after { 
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 5%;
+      left: 10%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8) 14%, rgba(255, 255, 255, 0) 24%);
+      transform: translateX(-30%) translateY(-25%) skewX(-20deg);
+      filter: blur(10px);
+    }
   </style>
 </head>
 <body>
